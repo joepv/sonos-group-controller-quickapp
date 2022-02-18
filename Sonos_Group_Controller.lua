@@ -215,7 +215,7 @@ function QuickApp:SetFavorite3()
 end
 
 function QuickApp:SetFavorite4()
-    if (self.FAV[1] ~= nill) then
+    if (self.FAV[4] ~= nill) then
         self:playFromUri(self.FAV[4]['source'], self.FAV[4]['metadata'])
         self:getVolume()
     end
