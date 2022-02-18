@@ -194,23 +194,31 @@ function QuickApp:refresh()
 end
 
 function QuickApp:SetFavorite1()
-    self:playFromUri(self.FAV[1]['source'], self.FAV[1]['metadata'])
-    self:getVolume()
+    if (self.FAV[1] ~= nill) then
+        self:playFromUri(self.FAV[1]['source'], self.FAV[1]['metadata'])
+        self:getVolume()
+    end
 end
 
 function QuickApp:SetFavorite2()
-    self:playFromUri(self.FAV[2]['source'], self.FAV[2]['metadata'])
-    self:getVolume()
+    if (self.FAV[2] ~= nill) then
+        self:playFromUri(self.FAV[2]['source'], self.FAV[2]['metadata'])
+        self:getVolume()
+    end
 end
 
 function QuickApp:SetFavorite3()
-    self:playFromUri(self.FAV[3]['source'], self.FAV[3]['metadata'])
-    self:getVolume()
+    if (self.FAV[3] ~= nill) then
+        self:playFromUri(self.FAV[3]['source'], self.FAV[3]['metadata'])
+        self:getVolume()
+    end
 end
 
 function QuickApp:SetFavorite4()
-    self:playFromUri(self.FAV[4]['source'], self.FAV[4]['metadata'])
-    self:getVolume()
+    if (self.FAV[1] ~= nill) then
+        self:playFromUri(self.FAV[4]['source'], self.FAV[4]['metadata'])
+        self:getVolume()
+    end
 end
 
 function QuickApp:AddToGroup(playerUuid)
