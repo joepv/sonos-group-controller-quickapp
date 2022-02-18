@@ -136,8 +136,9 @@ function QuickApp:getFavorites()
             self.FAV[i] = {title=title,source=res,metadata=resmd}
             i = i+1
         until (favoriteItems[1][i] == nill)
-        for i=1, 4 do
-            self:updateView("btn_fav" .. i, "text", self.FAV[i]['title'])
+        for k=1, i do
+            self:updateView("btn_fav" .. k, "text", self.FAV[k]['title'])
+            if k == 4 then break end
         end
     end,
     function(data) self:debug("ERROR"); self:debug(data) end)
