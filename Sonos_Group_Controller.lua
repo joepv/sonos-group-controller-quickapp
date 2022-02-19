@@ -1,3 +1,17 @@
+_=loadfile and loadfile("TQAE.lua") {
+    offline = true,
+    debug={
+        color = true,
+    },
+    logColors = { ["SYS"] = 'yellow', ["ERROR"]='red', ["WARN"] = 'orange', ["TRACE"] = 'blue', ["TEXT"] = 'grey' },
+    fibColors = { ["DEBUG"] = 'red', ["TRACE"] = 'blue', ["WARNING"] = 'orange', ["ERROR"] = 'red', ["TEXT"] = 'grey' }
+}
+
+--%%name="Sonos Controller"
+--%%type="com.fibaro.sonosSpeaker"
+--%%quickVars = {['IPv4'] = "192.168.2.33"}
+--FILE:xmlParser.lua,xmlParser;
+
 ----------------------------------------------------------------------------------
 -- Sonos Group Controller
 -- Version 1.0 (February 2022)
@@ -127,18 +141,22 @@ function QuickApp:getFavorites()
         local browseResponse = xmlParser.getXmlPath(xmlData, "s:Envelope", "s:Body", "u:BrowseResponse", "Result")[1][1].text
         local xmlBrowseResponse = xmlParser.parseXml(browseResponse)
         local favoriteItems = xmlParser.getXmlPath(xmlBrowseResponse, "DIDL-Lite")
-        local i = 1
-        repeat
-            local title = xmlParser.getXmlPath(favoriteItems[1][i], "item", "dc:title")[1][1].text
-            local res = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1].text)
-            local resmd = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "r:resMD")[1][1].text)
-            --self:debug(i,title,res) 
-            self.FAV[i] = {title=title,source=res,metadata=resmd}
-            i = i+1
-        until (favoriteItems[1][i] == nill)
-        for k=1, i do
-            self:updateView("btn_fav" .. k, "text", self.FAV[k]['title'])
-            if k == 4 then break end
+        -- check if table is empty
+        if (favoriteItems[1][1] ~= nil) then
+            local i = 1
+            repeat
+                local title = xmlParser.getXmlPath(favoriteItems[1][i], "item", "dc:title")[1][1].text
+                local res = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1].text)
+                local resmd = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "r:resMD")[1][1].text)
+                --self:debug(i,title,res) 
+                self.FAV[i] = {title=title,source=res,metadata=resmd}
+                i = i+1
+            until (favoriteItems[1][i] == nill)
+            for k=1, i-1 do
+                self:updateView("btn_fav" .. k, "text", self.FAV[k]['title'])
+                self:debug(self.FAV[k]['title'])
+                if k == 4 then break end
+            end
         end
     end,
     function(data) self:debug("ERROR"); self:debug(data) end)
