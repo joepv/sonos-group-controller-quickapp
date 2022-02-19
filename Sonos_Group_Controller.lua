@@ -101,9 +101,9 @@ function QuickApp:savePlayStateAndPause()
             self:pause()
         end,
         function(data)
-            self:debug("ERROR READING STATE")
-            self:debug(data)
-            self:pause()
+            self:debug("DEVICE IS OFFLINE - ERROR READING STATE")
+            self:updateProperty("state", "OFFLINE")
+            --self:pause()
         end)
 end
 
@@ -127,17 +127,22 @@ function QuickApp:getFavorites()
         local browseResponse = xmlParser.getXmlPath(xmlData, "s:Envelope", "s:Body", "u:BrowseResponse", "Result")[1][1].text
         local xmlBrowseResponse = xmlParser.parseXml(browseResponse)
         local favoriteItems = xmlParser.getXmlPath(xmlBrowseResponse, "DIDL-Lite")
-        local i = 1
-        repeat
-            local title = xmlParser.getXmlPath(favoriteItems[1][i], "item", "dc:title")[1][1].text
-            local res = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1].text)
-            local resmd = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "r:resMD")[1][1].text)
-            --self:debug(i,title,res) 
-            self.FAV[i] = {title=title,source=res,metadata=resmd}
-            i = i+1
-        until (favoriteItems[1][i] == nill)
-        for i=1, 4 do
-            self:updateView("btn_fav" .. i, "text", self.FAV[i]['title'])
+        -- check if table is empty
+        if (favoriteItems[1][1] ~= nil) then
+            local i = 1
+            repeat
+                local title = xmlParser.getXmlPath(favoriteItems[1][i], "item", "dc:title")[1][1].text
+                local res = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1].text)
+                local resmd = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "r:resMD")[1][1].text)
+                --self:debug(i,title,res) 
+                self.FAV[i] = {title=title,source=res,metadata=resmd}
+                i = i+1
+            until (favoriteItems[1][i] == nill)
+            for k=1, i-1 do
+                self:updateView("btn_fav" .. k, "text", self.FAV[k]['title'])
+                self:debug(self.FAV[k]['title'])
+                if k == 4 then break end
+            end
         end
     end,
     function(data) self:debug("ERROR"); self:debug(data) end)
@@ -193,23 +198,31 @@ function QuickApp:refresh()
 end
 
 function QuickApp:SetFavorite1()
-    self:playFromUri(self.FAV[1]['source'], self.FAV[1]['metadata'])
-    self:getVolume()
+    if (self.FAV[1] ~= nill) then
+        self:playFromUri(self.FAV[1]['source'], self.FAV[1]['metadata'])
+        self:getVolume()
+    end
 end
 
 function QuickApp:SetFavorite2()
-    self:playFromUri(self.FAV[2]['source'], self.FAV[2]['metadata'])
-    self:getVolume()
+    if (self.FAV[2] ~= nill) then
+        self:playFromUri(self.FAV[2]['source'], self.FAV[2]['metadata'])
+        self:getVolume()
+    end
 end
 
 function QuickApp:SetFavorite3()
-    self:playFromUri(self.FAV[3]['source'], self.FAV[3]['metadata'])
-    self:getVolume()
+    if (self.FAV[3] ~= nill) then
+        self:playFromUri(self.FAV[3]['source'], self.FAV[3]['metadata'])
+        self:getVolume()
+    end
 end
 
 function QuickApp:SetFavorite4()
-    self:playFromUri(self.FAV[4]['source'], self.FAV[4]['metadata'])
-    self:getVolume()
+    if (self.FAV[4] ~= nill) then
+        self:playFromUri(self.FAV[4]['source'], self.FAV[4]['metadata'])
+        self:getVolume()
+    end
 end
 
 function QuickApp:AddToGroup(playerUuid)
