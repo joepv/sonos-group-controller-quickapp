@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Sonos Group Controller
--- Version 1.0 (February 2022)
+-- Version 1.1 (February 2022)
 -- Copyright (c)2022 Joep Verhaeg <info@joepverhaeg.nl>
 
 -- If you like using this Quick App you can buy me a coffee:
