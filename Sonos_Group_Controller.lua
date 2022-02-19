@@ -115,9 +115,9 @@ function QuickApp:savePlayStateAndPause()
             self:pause()
         end,
         function(data)
-            self:debug("ERROR READING STATE")
-            self:debug(data)
-            self:pause()
+            self:debug("DEVICE IS OFFLINE - ERROR READING STATE")
+            self:updateProperty("state", "OFFLINE")
+            --self:pause()
         end)
 end
 
