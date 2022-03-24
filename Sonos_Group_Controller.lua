@@ -1,10 +1,7 @@
 ----------------------------------------------------------------------------------
 -- Sonos Group Controller
--- Version 1.1 (February 2022)
--- Copyright (c)2022 Joep Verhaeg <info@joepverhaeg.nl>
-
--- If you like using this Quick App you can buy me a coffee:
--- https://www.buymeacoffee.com/joep
+-- Version 1.2 (March 2022)
+-- Copyright (c)2022 Joep Verhaeg <info@joepverhaeg.nl> 
 
 -- Full documentation you can find at:
 -- https://docs.joepverhaeg.nl/sonos-group-controller
@@ -132,9 +129,10 @@ function QuickApp:getFavorites()
             local i = 1
             repeat
                 local title = xmlParser.getXmlPath(favoriteItems[1][i], "item", "dc:title")[1][1].text
-                local res = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1].text)
+                local resPath = xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1].text or ""
+                local res = xmlEscape(resPath)
                 local resmd = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "r:resMD")[1][1].text)
-                --self:debug(i,title,res) 
+                --self:debug(i,title,res,resmd) 
                 self.FAV[i] = {title=title,source=res,metadata=resmd}
                 i = i+1
             until (favoriteItems[1][i] == nill)
