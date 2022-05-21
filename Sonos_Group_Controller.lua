@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Sonos Group Controller
--- Version 1.2 (March 2022)
+-- Version 1.3 (May 2022)
 -- Copyright (c)2022 Joep Verhaeg <info@joepverhaeg.nl> 
 
 -- Full documentation you can find at:
@@ -129,7 +129,12 @@ function QuickApp:getFavorites()
             local i = 1
             repeat
                 local title = xmlParser.getXmlPath(favoriteItems[1][i], "item", "dc:title")[1][1].text
-                local resPath = xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1].text or ""
+                --self:debug(xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1])
+                if xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1] then
+                    resPath = xmlParser.getXmlPath(favoriteItems[1][i], "item", "res")[1][1].text
+                else
+                    resPath = ""
+                end
                 local res = xmlEscape(resPath)
                 local resmd = xmlEscape(xmlParser.getXmlPath(favoriteItems[1][i], "item", "r:resMD")[1][1].text)
                 --self:debug(i,title,res,resmd) 
@@ -138,7 +143,8 @@ function QuickApp:getFavorites()
             until (favoriteItems[1][i] == nill)
             for k=1, i-1 do
                 self:updateView("btn_fav" .. k, "text", self.FAV[k]['title'])
-                self:debug(self.FAV[k]['title'])
+                --self:debug(json.encode(self.FAV))
+                self:debug(self.FAV[k]['title'] .. " ->" .. self.FAV[k]['source'])
                 if k == 4 then break end
             end
         end
