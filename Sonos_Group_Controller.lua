@@ -1,7 +1,8 @@
 ----------------------------------------------------------------------------------
 -- Sonos Group Controller
 -- Version 1.3 (May 2022)
--- Copyright (c)2022 Joep Verhaeg <info@joepverhaeg.nl> 
+-- Version 1.4 (Januari 2023)
+-- Copyright (c)2022-2023 Joep Verhaeg <info@joepverhaeg.nl> 
 
 -- Full documentation you can find at:
 -- https://docs.joepverhaeg.nl/sonos-group-controller
@@ -416,6 +417,17 @@ function QuickApp:domute()
     self.mute = not self.mute
     self:setMute(self.mute)
     self:getVolume()
+end
+
+function QuickApp:configureSleepTimer(timeWhenSleep)
+    self:debug("sleep timer for " .. sleepMinutes .. " minutes")
+    local SET_SLEEP_ACTION = '"urn:schemas-upnp-org:service:AVTransport:1#ConfigureSleepTimer"'
+    local SET_SLEEP_BODY = '<u:ConfigureSleepTimer xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"><InstanceID>0</InstanceID><NewSleepTimerDuration>' .. timeWhenSleep .. '</NewSleepTimerDuration></u:ConfigureSleepTimer>'
+    self:sendRequest(self.AVTRANSPORT_URI, SET_SLEEP_ACTION, SET_SLEEP_BODY,
+        function(data)
+            self:debug(json.encode(data))
+        end
+    )
 end
 
 function QuickApp:sendRequest(uri, action, body, successCallback, errorCallback)
