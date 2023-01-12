@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------------------
 -- Sonos Group Controller
 -- Version 1.3 (May 2022)
--- Version 1.4 (Januari 2023)
+-- Version 1.4 (January 2023)
 -- Copyright (c)2022-2023 Joep Verhaeg <info@joepverhaeg.nl> 
 
 -- Full documentation you can find at:
@@ -35,13 +35,16 @@
 
 -- Lua : fibaro.call(qaId, "playFavorite", "title", "15")
 -- Desc: Play a Sonos favorite at the specified volume by using the name from the 
---      favorites list
+--       favorites list
 
 -- Lua : fibaro.call(qaId, "AddToGroup", "playerUuid")
 -- Desc: Add Sonos player to a group by using the Uuid of the group master.
 
 -- Lua : fibaro.call(qaId, "LeaveGroup")
 -- Desc: Remove the Sonos player from a group.
+
+-- Lua : fibaro.call(qaId, "configureSleepTimer", "23:15:00")
+-- Desc: Set the player to sleep at 23:15.
 
 -- Lua : fibaro.call(qaId, "playFromUri", "uri", "meta")
 -- Desc: Play an mp3, InTune or other audio format from an Uri.
